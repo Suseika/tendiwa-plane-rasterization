@@ -3,10 +3,10 @@ package org.tendiwa.rasterization.polygon
 import org.tendiwa.collectioins.loopedNextIndex
 import org.tendiwa.collectioins.nextAfter
 import org.tendiwa.collectioins.prevBefore
-import org.tendiwa.geometry.continuum.points.Point
-import org.tendiwa.geometry.continuum.polygons.Polygon
-import org.tendiwa.geometry.continuum.polygons.segments
-import org.tendiwa.geometry.continuum.segments.Segment
+import org.tendiwa.geometry.points.Point
+import org.tendiwa.geometry.polygons.Polygon
+import org.tendiwa.geometry.polygons.segments
+import org.tendiwa.geometry.segments.Segment
 import org.tendiwa.grid.masks.mutable.MutableArrayGridMask
 import org.tendiwa.grid.rectangles.maxY
 import org.tendiwa.grid.segments.ortho.HorizontalGridSegment

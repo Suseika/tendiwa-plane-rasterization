@@ -1,7 +1,7 @@
 package org.tendiwa.rasterization.shapes
 
 import org.junit.Test
-import org.tendiwa.geometry.continuum.rectangles.Rectangle
+import org.tendiwa.geometry.rectangles.Rectangle
 import org.tendiwa.grid.rectangles.GridRectangle
 import kotlin.test.assertEquals
 

@@ -1,8 +1,8 @@
 package org.tendiwa.rasterization.shapes
 
-import org.tendiwa.geometry.continuum.rectangles.maxX
-import org.tendiwa.geometry.continuum.rectangles.maxY
-import org.tendiwa.geometry.continuum.shapes.Shape
+import org.tendiwa.geometry.rectangles.maxX
+import org.tendiwa.geometry.rectangles.maxY
+import org.tendiwa.geometry.shapes.Shape
 import org.tendiwa.grid.rectangles.GridRectangle
 import org.tendiwa.math.doubles.closestInt
 

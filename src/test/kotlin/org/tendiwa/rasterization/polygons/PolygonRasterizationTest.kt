@@ -1,8 +1,8 @@
 package org.tendiwa.rasterization.polygons
 
 import org.junit.Test
-import org.tendiwa.geometry.continuum.points.Point
-import org.tendiwa.geometry.continuum.polygons.Polygon
+import org.tendiwa.geometry.points.Point
+import org.tendiwa.geometry.polygons.Polygon
 import org.tendiwa.rasterization.polygon.rasterized
 
 class PolygonRasterizationTest {

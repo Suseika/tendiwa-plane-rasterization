@@ -6,22 +6,22 @@
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>rasterization</artifactId>
+    <artifactId>plane-rasterization</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>tendiwa-rasterization</name>
-    <description>Rasterization algorithms to transform geometry to grid masks</description>
+    <description>Rasterization algorithms to transform 2d geometry to grid masks</description>
 
     <dependencies>
         <dependency>
             <groupId>org.tendiwa</groupId>
-            <artifactId>geometry</artifactId>
+            <artifactId>plane-geometry</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.tendiwa</groupId>
-            <artifactId>grid</artifactId>
+            <artifactId>plane-grid</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

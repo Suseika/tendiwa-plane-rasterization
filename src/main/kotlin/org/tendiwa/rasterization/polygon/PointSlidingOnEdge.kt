@@ -1,7 +1,7 @@
 package org.tendiwa.rasterization.polygon
 
 import org.tendiwa.geometry.points.Point
-import org.tendiwa.math.constants.EPSILON
+import org.tendiwa.math.doubles.isCloseToZero
 import org.tendiwa.math.matrices.determinant
 
 internal class PointSlidingOnEdge {
@@ -28,7 +28,7 @@ internal class PointSlidingOnEdge {
         val horizontalB = 100.0
         val horizontalC = (-100 * y).toDouble()
         val zn = determinant(a, b, horizontalA, horizontalB).toDouble()
-        if (Math.abs(zn) < EPSILON) {
+        if (zn.isCloseToZero) {
             throw RuntimeException()
         }
         this.x = -determinant(c, b, horizontalC, horizontalB) / zn

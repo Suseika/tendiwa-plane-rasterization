@@ -2,11 +2,11 @@ package org.tendiwa.rasterization.shapes
 
 import org.tendiwa.geometry.rectangles.maxX
 import org.tendiwa.geometry.rectangles.maxY
-import org.tendiwa.geometry.shapes.Shape
+import org.tendiwa.geometry.shapes.SegmentGroup
 import org.tendiwa.grid.rectangles.GridRectangle
 import org.tendiwa.math.doubles.closestInt
 
-val Shape.gridHull: GridRectangle
+val SegmentGroup.gridHull: GridRectangle
     get() {
         val hull = this.hull
         val minX = hull.x.closestInt

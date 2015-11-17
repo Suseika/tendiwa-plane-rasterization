@@ -5,7 +5,6 @@ import org.tendiwa.collectioins.nextAfter
 import org.tendiwa.collectioins.prevBefore
 import org.tendiwa.geometry.points.Point
 import org.tendiwa.geometry.polygons.Polygon
-import org.tendiwa.geometry.polygons.segments
 import org.tendiwa.geometry.segments.Segment
 import org.tendiwa.grid.masks.mutable.MutableArrayGridMask
 import org.tendiwa.grid.rectangles.maxY

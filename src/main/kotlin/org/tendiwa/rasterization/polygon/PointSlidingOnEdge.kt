@@ -1,7 +1,7 @@
 package org.tendiwa.rasterization.polygon
 
-import org.tendiwa.geometry.EPSILON
 import org.tendiwa.geometry.points.Point
+import org.tendiwa.math.constants.EPSILON
 import org.tendiwa.math.matrices.determinant
 
 internal class PointSlidingOnEdge {

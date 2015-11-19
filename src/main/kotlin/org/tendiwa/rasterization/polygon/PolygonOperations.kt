@@ -1,6 +1,6 @@
 package org.tendiwa.rasterization.polygon
 
-import org.tendiwa.collectioins.loopedTriLinks
+import org.tendiwa.collections.loopedTriLinks
 import org.tendiwa.geometry.points.Point
 import org.tendiwa.geometry.polygons.Polygon
 import java.util.*

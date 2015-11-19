@@ -1,8 +1,8 @@
 package org.tendiwa.rasterization.polygon
 
-import org.tendiwa.collectioins.loopedNextIndex
-import org.tendiwa.collectioins.nextAfter
-import org.tendiwa.collectioins.prevBefore
+import org.tendiwa.collections.loopedNextIndex
+import org.tendiwa.collections.nextAfter
+import org.tendiwa.collections.prevBefore
 import org.tendiwa.geometry.points.Point
 import org.tendiwa.geometry.polygons.Polygon
 import org.tendiwa.geometry.segments.Segment

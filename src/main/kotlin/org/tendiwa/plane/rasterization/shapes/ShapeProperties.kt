@@ -1,8 +1,6 @@
 package org.tendiwa.plane.rasterization.shapes
 
 import org.tendiwa.math.doubles.closestInt
-import org.tendiwa.plane.geometry.rectangles.maxX
-import org.tendiwa.plane.geometry.rectangles.maxY
 import org.tendiwa.plane.geometry.shapes.SegmentGroup
 import org.tendiwa.plane.grid.rectangles.GridRectangle
 

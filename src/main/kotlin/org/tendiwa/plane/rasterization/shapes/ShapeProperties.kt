@@ -1,10 +1,10 @@
-package org.tendiwa.rasterization.shapes
+package org.tendiwa.plane.rasterization.shapes
 
-import org.tendiwa.geometry.rectangles.maxX
-import org.tendiwa.geometry.rectangles.maxY
-import org.tendiwa.geometry.shapes.SegmentGroup
-import org.tendiwa.grid.rectangles.GridRectangle
 import org.tendiwa.math.doubles.closestInt
+import org.tendiwa.plane.geometry.rectangles.maxX
+import org.tendiwa.plane.geometry.rectangles.maxY
+import org.tendiwa.plane.geometry.shapes.SegmentGroup
+import org.tendiwa.plane.grid.rectangles.GridRectangle
 
 val SegmentGroup.gridHull: GridRectangle
     get() {

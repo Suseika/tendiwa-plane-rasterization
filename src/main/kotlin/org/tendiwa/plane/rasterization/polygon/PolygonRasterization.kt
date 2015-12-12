@@ -1,17 +1,17 @@
-package org.tendiwa.rasterization.polygon
+package org.tendiwa.plane.rasterization.polygon
 
 import org.tendiwa.collections.loopedNextIndex
 import org.tendiwa.collections.nextAfter
 import org.tendiwa.collections.prevBefore
-import org.tendiwa.geometry.points.Point
-import org.tendiwa.geometry.polygons.Polygon
-import org.tendiwa.geometry.segments.Segment
-import org.tendiwa.grid.masks.mutable.MutableArrayGridMask
-import org.tendiwa.grid.rectangles.maxY
-import org.tendiwa.grid.segments.ortho.HorizontalGridSegment
-import org.tendiwa.grid.tiles.Tile
-import org.tendiwa.rasterization.segments.GridSegment
-import org.tendiwa.rasterization.shapes.gridHull
+import org.tendiwa.plane.geometry.points.Point
+import org.tendiwa.plane.geometry.polygons.Polygon
+import org.tendiwa.plane.geometry.segments.Segment
+import org.tendiwa.plane.grid.masks.mutable.MutableArrayGridMask
+import org.tendiwa.plane.grid.rectangles.maxY
+import org.tendiwa.plane.grid.segments.ortho.HorizontalGridSegment
+import org.tendiwa.plane.grid.tiles.Tile
+import org.tendiwa.plane.rasterization.segments.GridSegment
+import org.tendiwa.plane.rasterization.shapes.gridHull
 import java.util.*
 
 val Polygon.rasterized: MutableArrayGridMask

@@ -1,9 +1,9 @@
-package org.tendiwa.rasterization.polygons
+package org.tendiwa.plane.rasterization.polygons
 
 import org.junit.Test
-import org.tendiwa.geometry.points.Point
-import org.tendiwa.geometry.polygons.Polygon
-import org.tendiwa.rasterization.polygon.rasterized
+import org.tendiwa.plane.geometry.points.Point
+import org.tendiwa.plane.geometry.polygons.Polygon
+import org.tendiwa.plane.rasterization.polygon.rasterized
 
 class PolygonRasterizationTest {
     @Test fun rasterizes() {
@@ -13,6 +13,7 @@ class PolygonRasterizationTest {
             Point(10.0, 10.0)
         ).rasterized
     }
+
     @Test fun rasterizesPolygonWithConsecutiveHorizontalEdges() {
         Polygon(
             Point(0.0, 10.0),

@@ -1,8 +1,8 @@
-package org.tendiwa.rasterization.polygon
+package org.tendiwa.plane.rasterization.polygon
 
-import org.tendiwa.geometry.points.Point
 import org.tendiwa.math.doubles.isCloseToZero
 import org.tendiwa.math.matrices.determinant
+import org.tendiwa.plane.geometry.points.Point
 
 internal class PointSlidingOnEdge {
     var x: Double = 0.toDouble()

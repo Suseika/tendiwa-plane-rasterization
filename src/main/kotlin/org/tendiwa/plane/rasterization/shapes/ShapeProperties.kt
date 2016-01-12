@@ -11,7 +11,6 @@ val SegmentGroup.gridHull: GridRectangle
         val minY = hull.y.closestInt
         val maxX = hull.maxX.closestInt
         val maxY = hull.maxY.closestInt
-        println("$hull ${hull.maxX} ${hull.maxY}")
         return GridRectangle(
             minX,
             minY,

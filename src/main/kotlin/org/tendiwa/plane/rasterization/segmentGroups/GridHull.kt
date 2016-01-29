@@ -1,4 +1,4 @@
-package org.tendiwa.plane.rasterization.shapes
+package org.tendiwa.plane.rasterization.segmentGroups
 
 import org.tendiwa.math.doubles.closestInt
 import org.tendiwa.plane.geometry.shapes.SegmentGroup

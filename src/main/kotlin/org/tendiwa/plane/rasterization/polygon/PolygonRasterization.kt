@@ -4,8 +4,10 @@ import org.tendiwa.collections.loopedNextIndex
 import org.tendiwa.collections.nextAfter
 import org.tendiwa.collections.prevBefore
 import org.tendiwa.plane.geometry.points.Point
+import org.tendiwa.plane.geometry.points.segmentTo
 import org.tendiwa.plane.geometry.polygons.Polygon
 import org.tendiwa.plane.geometry.segments.Segment
+import org.tendiwa.plane.geometry.segments.intersectsHorizontalLine
 import org.tendiwa.plane.grid.masks.mutable.MutableArrayGridMask
 import org.tendiwa.plane.grid.rectangles.GridRectangle
 import org.tendiwa.plane.grid.rectangles.maxY
@@ -131,7 +133,7 @@ private class PolygonRasterization(poly: Polygon) {
             while (i < numberOfVertices) {
                 vertex = polygon.points[i]
                 val nextVertex = polygon.points.nextAfter(i)
-                if (horizontalLineIntersectsSegment(nextVertex, vertex, y)) {
+                if (nextVertex.segmentTo(vertex).intersectsHorizontalLine(y.toDouble())) {
                     numberOfIntersections++
                 } else if (vertex.y == yDouble) {
                     /*
@@ -187,17 +189,13 @@ private class PolygonRasterization(poly: Polygon) {
 
             val intersections = arrayOfNulls<Any>(numberOfIntersections)
             var j = 0
-            vertex = polygon.points[0]
-            for (k in 0..numberOfVertices - 1) {
-                // TODO: Use polygon.segments[k]
-                val nextVertex = polygon.points[if (k + 1 == numberOfVertices) 0 else k + 1]
-                if (horizontalLineIntersectsSegment(nextVertex, vertex, y)) {
+            for (segment in polygon.segments) {
+                if (segment.intersectsHorizontalLine(y.toDouble())) {
                     val pointSlidingOnEdge =
-                        cornerToSlidingPoint[vertex]!!
-                            .atIntersection(vertex, nextVertex, y)
+                        cornerToSlidingPoint[segment.start]!!
+                            .atIntersection(segment.start, segment.end, y)
                     intersections[j++] = pointSlidingOnEdge
                 }
-                vertex = nextVertex
             }
             if (consecutiveSegments != null) {
                 for (segment in consecutiveSegments) {
@@ -247,12 +245,6 @@ private class PolygonRasterization(poly: Polygon) {
         }
     }
 
-    private fun horizontalLineIntersectsSegment(
-        start: Point,
-        end: Point,
-        y: Int
-    ) =
-        end.y < y && start.y > y || end.y > y && start.y < y
 
     private fun horizontalSegment(
         ax: Double,

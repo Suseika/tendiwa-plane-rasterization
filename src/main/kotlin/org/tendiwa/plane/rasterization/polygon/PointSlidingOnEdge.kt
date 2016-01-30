@@ -1,6 +1,5 @@
 package org.tendiwa.plane.rasterization.polygon
 
-import org.tendiwa.math.doubles.isCloseToZero
 import org.tendiwa.math.matrices.determinant
 import org.tendiwa.plane.geometry.points.Point
 
@@ -23,9 +22,9 @@ internal class PointSlidingOnEdge {
         val horizontalB = 100.0
         val horizontalC = (-100 * y).toDouble()
         val zn = determinant(a, b, horizontalA, horizontalB).toDouble()
-        if (zn.isCloseToZero) {
-            throw RuntimeException()
-        }
+//        if (zn.isCloseToZero) {
+//            throw RuntimeException()
+//        }
         return Point(
             -determinant(c, b, horizontalC, horizontalB) / zn,
             -determinant(a, c, horizontalA, horizontalC) / zn

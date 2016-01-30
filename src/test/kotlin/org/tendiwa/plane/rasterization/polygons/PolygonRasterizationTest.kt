@@ -11,7 +11,9 @@ class PolygonRasterizationTest {
             Point(0.0, 0.0),
             Point(20.0, 5.0),
             Point(10.0, 10.0)
-        ).rasterized
+        )
+            .rasterized
+            .apply { assert(tiles.size > 0) }
     }
 
     @Test fun rasterizesPolygonWithConsecutiveHorizontalEdges() {
@@ -32,6 +34,30 @@ class PolygonRasterizationTest {
             Point(70.0, 20.0),
             Point(70.0, 40.0),
             Point(0.0, 40.0)
-        ).rasterized
+        )
+            .rasterized
+            .apply { assert(tiles.size > 0) }
+    }
+
+    @Test
+    fun `rasterizes a polygon smaller than 1 tile`() {
+        Polygon(
+            Point(0.0, 0.0),
+            Point(0.1, 0.0),
+            Point(0.1, 0.1)
+        )
+            .rasterized
+            .apply { assert(tiles.size > 0) }
+    }
+
+    @Test
+    fun `buggy case`() {
+        Polygon(
+            Point(6.60156925537876, 2.19927888657355),
+            Point(4.28376357283713, 3.48064706953204),
+            Point(5.1318503223609, 5.01471066926644)
+        )
+            .rasterized
+            .apply { assert(tiles.size > 0) }
     }
 }

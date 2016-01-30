@@ -7,11 +7,12 @@ import org.tendiwa.plane.geometry.points.Point
 import org.tendiwa.plane.geometry.polygons.Polygon
 import org.tendiwa.plane.geometry.segments.Segment
 import org.tendiwa.plane.grid.masks.mutable.MutableArrayGridMask
+import org.tendiwa.plane.grid.rectangles.GridRectangle
 import org.tendiwa.plane.grid.rectangles.maxY
 import org.tendiwa.plane.grid.segments.ortho.HorizontalGridSegment
 import org.tendiwa.plane.grid.tiles.Tile
-import org.tendiwa.plane.rasterization.segments.GridSegment
 import org.tendiwa.plane.rasterization.segmentGroups.gridHull
+import org.tendiwa.plane.rasterization.segments.GridSegment
 import java.util.*
 
 val Polygon.rasterized: MutableArrayGridMask
@@ -34,18 +35,28 @@ private class PolygonRasterization(poly: Polygon) {
 
     val numberOfVertices = polygon.points.size
 
-    val map = polygon.points.map { Pair(it, PointSlidingOnEdge()) }.toMap()
+    val cornerToSlidingPoint = polygon.points
+        .map { Pair(it, PointSlidingOnEdge()) }
+        .toMap()
 
     init {
-        val bounds = poly.gridHull
-        this.result = MutableArrayGridMask(bounds)
-        (bounds.y..bounds.maxY).forEach {
-            Row(it).fillConsecutiveSegments()
-        }
-        drawIntegerHorizontalEdges()
+        result = computeGridMask(poly.gridHull)
     }
 
-    private fun drawIntegerHorizontalEdges() {
+    private fun computeGridMask(bounds: GridRectangle): MutableArrayGridMask =
+        MutableArrayGridMask(bounds)
+            .apply {
+                if (bounds.width == 1 || bounds.height == 1) {
+                    fill()
+                } else {
+                    (bounds.y..bounds.maxY)
+                        .map { Row(it, this) }
+                        .forEach { it.fillConsecutiveSegments() }
+                    drawIntegerHorizontalEdges()
+                }
+            }
+
+    private fun MutableArrayGridMask.drawIntegerHorizontalEdges() {
         polygon
             .segments
             .filter { edgeNeedsExplicitRasterization(it) }
@@ -63,35 +74,35 @@ private class PolygonRasterization(poly: Polygon) {
         return startY == endY
     }
 
-    private fun fillWithTiles(cells: Iterable<Tile>) {
+    private fun MutableArrayGridMask.fillWithTiles(cells: Iterable<Tile>) {
         cells.forEach { tile ->
-            if (!this.result.contains(tile.x, tile.y)) {
-                this.result.add(tile.x, tile.y)
+            if (!contains(tile.x, tile.y)) {
+                add(tile.x, tile.y)
             }
         }
     }
 
-    internal inner class Row(val y: Int) {
+    internal inner class Row(val y: Int, val mask: MutableArrayGridMask) {
         private val yDouble = y.toDouble()
 
-        private val intersections: Array<Any?> =
+        val inters: Array<Any?> =
             intersectionsWithPolygon()
-                .apply {
-                    sortByX()
-                }
+        private val intersections: Array<Any?> =
+            inters
+                .apply { sortByX(this) }
 
-        private fun Array<Any?>.sortByX() {
-            Arrays.sort<Any>(this) {
+        internal fun sortByX(array: Array<Any?>) {
+            Arrays.sort<Any>(array) {
                 a: Any, b: Any ->
                 val valueA: Double
                 val valueB: Double
-                if (a is PointSlidingOnEdge) {
+                if (a is Point) {
                     valueA = a.x
                 } else {
                     assert(a is Pair<*, *>)
                     valueA = polygon.points[(a as Pair<Int, Int>).first].x
                 }
-                if (b is PointSlidingOnEdge) {
+                if (b is Point) {
                     valueB = b.x
                 } else {
                     assert(a is Pair<*, *>)
@@ -100,10 +111,10 @@ private class PolygonRasterization(poly: Polygon) {
                 java.lang.Double.compare(valueA, valueB)
             }
             assert(
-                this.size % 2 == 0
-                    || this.size == 1
-                    && this[0] is Pair<*, *>
-            ) { "$size, y=$y" }
+                array.size % 2 == 0
+                    || array.size == 1
+                    && array[0] is Pair<*, *>
+            ) { "${array.size}, y=$y" }
         }
 
         private fun intersectionsWithPolygon(): Array<Any?> {
@@ -128,7 +139,7 @@ private class PolygonRasterization(poly: Polygon) {
                      * then there are 0+ points after it on line y (there will
                      * usually be 0 points after it).
                      */
-                    val firstIndex = i;
+                    val firstIndex = i
                     while (
                     i < numberOfVertices
                         && polygon.points.nextAfter(i).y == y.toDouble()
@@ -178,11 +189,12 @@ private class PolygonRasterization(poly: Polygon) {
             var j = 0
             vertex = polygon.points[0]
             for (k in 0..numberOfVertices - 1) {
+                // TODO: Use polygon.segments[k]
                 val nextVertex = polygon.points[if (k + 1 == numberOfVertices) 0 else k + 1]
                 if (horizontalLineIntersectsSegment(nextVertex, vertex, y)) {
-                    val pointSlidingOnEdge = map[vertex]
-                    pointSlidingOnEdge!!
-                        .setToIntersection(vertex, nextVertex, y)
+                    val pointSlidingOnEdge =
+                        cornerToSlidingPoint[vertex]!!
+                            .atIntersection(vertex, nextVertex, y)
                     intersections[j++] = pointSlidingOnEdge
                 }
                 vertex = nextVertex
@@ -203,8 +215,7 @@ private class PolygonRasterization(poly: Polygon) {
                 val ax = polygon.points[array.first].x
                 val bx = polygon.points[array.second].x
                 assert(bx > ax)
-                result.fillHorizontalSegment(
-                    horizontalSegment(ax, bx, y))
+                mask.fillHorizontalSegment(horizontalSegment(ax, bx, y))
             } else {
                 var i = 0
                 while (i < intersections.size) {
@@ -212,14 +223,14 @@ private class PolygonRasterization(poly: Polygon) {
                     val b = intersections[i + 1]
                     val ax: Double
                     val bx: Double
-                    if (a is PointSlidingOnEdge) {
+                    if (a is Point) {
                         ax = a.x
                     } else {
                         assert(a is Pair<*, *>)
                         val aint = a as Pair<Int, Int>
                         ax = polygon.points[aint.first].x
                     }
-                    if (b is PointSlidingOnEdge) {
+                    if (b is Point) {
                         bx = b.x
                     } else {
                         assert(b is Pair<*, *>)
@@ -227,7 +238,7 @@ private class PolygonRasterization(poly: Polygon) {
                         bx = polygon.points[bint.second].x
                     }
                     assert(bx > ax)
-                    result.fillHorizontalSegment(
+                    mask.fillHorizontalSegment(
                         horizontalSegment(ax, bx, y)
                     )
                     i += 2
@@ -240,15 +251,16 @@ private class PolygonRasterization(poly: Polygon) {
         start: Point,
         end: Point,
         y: Int
-    ) = end.y < y && start.y > y || end.y > y && start.y < y
+    ) =
+        end.y < y && start.y > y || end.y > y && start.y < y
 
     private fun horizontalSegment(
         ax: Double,
         bx: Double,
         y: Int
     ): HorizontalGridSegment {
-        val startX = Math.floor(ax).toInt()
-        val endX = Math.ceil(bx).toInt()
+        val startX = Math.round(ax).toInt()
+        val endX = Math.round(bx).toInt()
         return HorizontalGridSegment(Tile(startX, y), endX - startX + 1)
     }
 }

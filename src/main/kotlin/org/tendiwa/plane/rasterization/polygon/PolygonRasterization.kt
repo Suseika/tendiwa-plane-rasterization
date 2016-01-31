@@ -24,11 +24,7 @@ private class PolygonRasterization(poly: Polygon) {
      */
     private val polygon: Polygon = poly.collapseHorizontalChains()
 
-    internal val result: MutableArrayGridMask
-
-    init {
-        result = computeGridMask(poly.gridHull)
-    }
+    internal val result: MutableArrayGridMask = computeGridMask(poly.gridHull)
 
     private fun computeGridMask(bounds: GridRectangle): MutableArrayGridMask =
         MutableArrayGridMask(bounds)

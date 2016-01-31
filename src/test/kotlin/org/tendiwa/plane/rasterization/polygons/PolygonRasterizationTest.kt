@@ -4,7 +4,7 @@ import org.junit.Test
 import org.tendiwa.plane.directions.CardinalDirection.*
 import org.tendiwa.plane.geometry.points.Point
 import org.tendiwa.plane.geometry.polygons.Polygon
-import org.tendiwa.plane.rasterization.polygon.rasterized
+import org.tendiwa.plane.rasterization.polygon.rasterize
 
 class PolygonRasterizationTest {
     @Test fun rasterizesPolygonWithConsecutiveHorizontalEdges() {
@@ -26,7 +26,7 @@ class PolygonRasterizationTest {
             Point(70.0, 40.0),
             Point(0.0, 40.0)
         )
-            .rasterized
+            .rasterize()
             .apply { assert(tiles.size > 0) }
     }
 
@@ -37,7 +37,7 @@ class PolygonRasterizationTest {
             Point(0.1, 0.0),
             Point(0.1, 0.1)
         )
-            .rasterized
+            .rasterize()
             .apply { assert(tiles.size > 0) }
     }
 
@@ -48,7 +48,7 @@ class PolygonRasterizationTest {
             Point(4.28376357283713, 3.48064706953204),
             Point(5.1318503223609, 5.01471066926644)
         )
-            .rasterized
+            .rasterize()
             .apply { assert(tiles.size > 0) }
     }
 
@@ -65,7 +65,7 @@ class PolygonRasterizationTest {
                 move(30.0, W)
             }
         )
-            .rasterized
+            .rasterize()
             .apply { assert(tiles.size > 0) }
     }
 }

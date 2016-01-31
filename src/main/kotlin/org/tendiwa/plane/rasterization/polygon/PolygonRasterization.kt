@@ -8,8 +8,8 @@ import org.tendiwa.plane.grid.rectangles.maxY
 import org.tendiwa.plane.rasterization.segmentGroups.gridHull
 import org.tendiwa.plane.rasterization.segments.GridSegment
 
-val Polygon.rasterized: MutableArrayGridMask
-    get() = PolygonRasterization(this).result
+fun Polygon.rasterize(): MutableArrayGridMask =
+    PolygonRasterization(this).result
 
 /**
  * The algorithm is described here:

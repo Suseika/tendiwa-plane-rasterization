@@ -5,7 +5,6 @@ import org.tendiwa.plane.geometry.segments.Segment
 import org.tendiwa.plane.grid.masks.mutable.MutableArrayGridMask
 import org.tendiwa.plane.grid.rectangles.GridRectangle
 import org.tendiwa.plane.grid.rectangles.maxY
-import org.tendiwa.plane.grid.tiles.Tile
 import org.tendiwa.plane.rasterization.segmentGroups.gridHull
 import org.tendiwa.plane.rasterization.segments.GridSegment
 
@@ -48,21 +47,16 @@ private class PolygonRasterization(poly: Polygon) {
         polygon
             .segments
             .filter { it.needsExplicitRasterization() }
-            .map { GridSegment(it) }
-            .map { it.tiles }
-            .forEach { fillWithTiles(it) }
+            .flatMap { GridSegment(it).tiles }
+            .forEach {
+                tile ->
+                if (!contains(tile.x, tile.y)) {
+                    add(tile.x, tile.y)
+                }
+            }
     }
 
     private fun Segment.needsExplicitRasterization(): Boolean =
         start.y != Math.floor(start.y)
             && start.y == end.y
-
-    private fun MutableArrayGridMask.fillWithTiles(cells: Iterable<Tile>) {
-        cells.forEach { tile ->
-            if (!contains(tile.x, tile.y)) {
-                add(tile.x, tile.y)
-            }
-        }
-    }
-
 }

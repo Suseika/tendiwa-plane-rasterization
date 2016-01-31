@@ -47,20 +47,15 @@ private class PolygonRasterization(poly: Polygon) {
     private fun MutableArrayGridMask.drawIntegerHorizontalEdges() {
         polygon
             .segments
-            .filter { edgeNeedsExplicitRasterization(it) }
+            .filter { it.needsExplicitRasterization() }
             .map { GridSegment(it) }
             .map { it.tiles }
             .forEach { fillWithTiles(it) }
     }
 
-    private fun edgeNeedsExplicitRasterization(segment: Segment): Boolean {
-        val startY = segment.start.y
-        if (startY != Math.floor(startY)) {
-            return false
-        }
-        val endY = segment.end.y
-        return startY == endY
-    }
+    private fun Segment.needsExplicitRasterization(): Boolean =
+        start.y != Math.floor(start.y)
+            && start.y == end.y
 
     private fun MutableArrayGridMask.fillWithTiles(cells: Iterable<Tile>) {
         cells.forEach { tile ->
